@@ -1,0 +1,51 @@
+[root@osboxes rabbit1]# vi yaml.yml
+[root@osboxes rabbit1]# ansible-playbook yaml.yml
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [localhost] *************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************
+ok: [localhost]
+
+TASK [Verify App/Database are running or not] ********************************************************************************
+changed: [localhost]
+
+TASK [debug] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": "process_not_running"
+}
+
+TASK [Decision point to start patching] **************************************************************************************
+skipping: [localhost]
+
+TASK [Copy the Kernel Patch Repo File] ***************************************************************************************
+ok: [localhost]
+
+TASK [Current Kernel Version] ************************************************************************************************
+changed: [localhost]
+
+TASK [Initiating Patching] ***************************************************************************************************
+ok: [localhost]
+
+TASK [debug] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": "kernel has been updated"
+}
+
+TASK [Check if reboot is required or not] ************************************************************************************
+changed: [localhost]
+
+TASK [debug] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": "reboot is not required"
+}
+
+TASK [Reboot the system after patching] **************************************************************************************
+changed: [localhost]
+
+TASK [Wait the system to come up] ********************************************************************************************
+Pausing for 60 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+
+Remote side unexpectedly closed network connection
+
