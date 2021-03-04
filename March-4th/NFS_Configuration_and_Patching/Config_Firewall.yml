@@ -1,0 +1,41 @@
+---
+- hosts: nfs-server
+  remote_user: ansible
+  become: yes
+
+
+  tasks:
+  - name: Web access Firewall rule
+    firewalld: 
+     zone: public
+     service: https
+     permanent: yes
+     state: enabled
+
+  - name: Enable port 
+    firewalld:
+     zone: public
+     port: 2049/tcp
+     permanent: yes
+     state: enabled
+  - name: Enable port
+    firewalld:
+     zone: public
+     port: 2049/udp
+     permanent: yes
+     state: enabled
+ 
+ # - name: Enable port
+ #   firewalld:
+ #    rich_rule: rule forward-port port=80 protocol=tcp to-port=8081
+ #    zone: public
+ #    permanent: yes
+ #    state: enabled
+
+
+
+  - name: Reload FirewallD Service
+    service:
+     name: firewalld
+     state: restarted
+   

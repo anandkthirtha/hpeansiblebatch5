@@ -1,0 +1,19 @@
+---
+- hosts: nfs-clients
+  remote_user: ansible
+  become: yes
+  
+  tasks:
+    - name: install nfs- utils
+      yum: name=nfs-utils state=latest
+
+
+    - name: Create a mountable directory if it does not exist
+      file:
+       path: /mnt/web_storage
+       state: directory
+       owner: ansible
+       group: ansible
+       mode: '0775'
+    - name: Mount Volume
+      shell: mount 172.31.88.9:/home/shared /mnt/web_storage
