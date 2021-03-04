@@ -1,0 +1,76 @@
+---
+- name: 
+  hosts: local host 
+  gather_facts: false
+  become: true
+  tasks: 
+  - name: Create a new database with name 'test'
+    community.mysql.mysql_db:
+    name: test
+    state: present
+
+  - name: Create new databases with names 'task1' and 'task2'
+    community.mysql.mysql_db:
+      name:
+        - task1
+        - task2
+    state: present
+
+# Copy database dump file to remote host and restore it to database 'my_db'
+#  - name: Copy database dump file
+#    copy:
+#       src: dump.sql.bz2
+#       dest: /tmp
+
+#  - name: Restore database
+#    community.mysql.mysql_db:
+#       name: my_db
+#       state: import
+#    target: /tmp/dump.sql.bz2
+
+#  - name: Restore database ignoring errors
+#    community.mysql.mysql_db:
+#      name: my_db
+#      state: import
+#      target: /tmp/dump.sql.bz2
+#    force: yes
+
+#  - name: Dump multiple databases
+#    community.mysql.mysql_db:
+#      state: dump
+#      name: db_1,db_2
+#    target: /tmp/dump.sql
+
+#  - name: Dump multiple databases
+#    community.mysql.mysql_db:
+#      state: dump
+#      name:
+#        - db_1
+#        - db_2
+#    target: /tmp/dump.sql
+
+#  - name: Dump all databases to hostname.sql
+#    community.mysql.mysql_db:
+#       state: dump
+#       name: all
+#    target: /tmp/dump.sql
+
+#  - name: Dump all databases to hostname.sql including master data
+#    community.mysql.mysql_db:
+#       state: dump
+#       name: all
+#    target: /tmp/dump.sql
+#    master_data: 1
+
+  - name: Delete database with name 'test'
+    community.mysql.mysql_db:
+       name: test
+    state: absent
+
+  - name: Make sure there is neither a database with name 'task1', nor one with name 'task2'
+    community.mysql.mysql_db:
+       name:
+        - task1
+        - task2
+    state: absent
+
