@@ -1,0 +1,28 @@
+---
+- name: installing the elasticsearch
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install the java-1.8.0
+    yum:
+     name: java-1.8.0-openjdk.x86_64
+     state: latest
+  - name: register the elastic PGP key
+    command: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  - name: Install elasticsearch
+    yum:
+      name: elasticsearch
+      state: present
+  - name: Installing kibana
+    yum:
+      name: kibana
+      state: present
+  - name: elastic search services start
+    service:
+      name: elasticsearch
+      state: started
+  - name : kibana search services start
+    service:
+      name: kibana
+      state: started

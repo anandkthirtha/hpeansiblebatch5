@@ -1,0 +1,19 @@
+---
+- name: Managing elastic search
+  hosts: all
+  tasks:
+  - name: Get elasticsearch cluster health status
+    uri:
+     url: " http://127.0.0.1:9200"
+    register: reg_get_cluster_health
+  - name: Elasticsearch health status
+    debug:
+     var: reg_get_cluster_health
+  - name: Print output if elasticsearch cluster is not active
+    debug:
+     msg: elasticsearch cluster is not active
+    when: reg_get_cluster_health.status != 200
+  - name: Print output if elasticsearch cluster is active
+    debug:
+     msg: elasticsearch cluster is active
+    when: reg_get_cluster_health.status == 200
