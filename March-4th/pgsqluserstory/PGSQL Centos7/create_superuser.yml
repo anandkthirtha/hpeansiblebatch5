@@ -1,0 +1,26 @@
+---
+  - name: PostgreSQL
+    hosts: localhost
+    become: yes
+    vars:
+    vars_prompt:
+        - name: create_user
+          prompt: Enter the value of createuser
+          private: no
+
+    gather_facts: false
+    tasks:
+      - block:
+          - name: Create super user
+            command: sudo -u postgres createuser --interactive
+
+          - name: create db
+            command: sudo -u postgres createdb {{create_user}}
+
+          - name: Add user
+            command: sudo adduser {{create_user}}
+
+          - name: Execute psql terminal
+            command: sudo -u {{create_user}} psql
+
+        ignore_errors: yes
