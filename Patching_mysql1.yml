@@ -1,0 +1,44 @@
+
+---
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Install MySQL repository
+    yum:
+      name: "https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm"
+      state: present
+
+# in case we need older version of MySQL we disable
+# repository version 8.0 and enable version 5.7
+
+  
+# - name: Disable MySQL 8.0 repository
+#    shell: yum-config-manager --disable mysql80-community
+#  - name: Enable MySQL 5.7 repository
+#    shell: yum-config-manager --enable mysql57-community
+
+  - name: Install MySQL packages
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+        - mysql-community-server
+        - mysql-community-client
+
+  - name: Enable the MySQL service
+    service:
+      name: mysqld
+      state: started
+      enabled: true
+
+  - name: restart system
+    command: shutdown -r +1 "Rebooting System After Patching"
+
+  - name: Wait for system to reboot
+    wait_for_connection:
+      connect_timeout: 20
+      sleep: 5
+      delay: 5
+      timeout: 60
+

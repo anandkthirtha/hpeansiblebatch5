@@ -7,16 +7,32 @@
         src: /home/osboxes/Downloads/mysql-community-embedded-compat-5.7.33-1.el7.x86_64.rpm
         dest: /tmp/
       
-      
+    - name: Enable MySQL 5.7 repository
+      shell: yum-config-manager --enable mysql57-community
+ 
+    - name: Install MySQL packages
+      yum:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - mysql-community-server
+          - mysql-community-client
+ 
+    - name: Enable the MySQL service
+      service:
+        name: mysqld
+        state: started
+        enabled: true
 
     - name: Install PMSs
       yum: 
         name: /tmp/mysql-community-embedded-compat-5.7.33-1.el7.x86_64.rpm 
         state: present
     - name: restart system
-      command: shutdown -r +1 "Rebooting System After Patchiing"
+      command: shutdown -r +1 "Rebooting System After Patching"
  
     - name: Wait for thing to reboot
-      pause: secomds=45
+      pause: seconds=45
          
 
