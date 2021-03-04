@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Copy the RPM to /temp/rpms
+      copy: 
+        src: /home/osboxes/Downloads/mysql-community-embedded-compat-5.7.33-1.el7.x86_64.rpm
+        dest: /tmp/
+      
+      
+
+    - name: Install PMSs
+      yum: 
+        name: /tmp/mysql-community-embedded-compat-5.7.33-1.el7.x86_64.rpm 
+        state: present
+    - name: restart system
+      command: shutdown -r +1 "Rebooting System After Patchiing"
+ 
+    - name: Wait for thing to reboot
+      pause: secomds=45
+         
+
