@@ -1,0 +1,51 @@
+---
+  - name: Install the PostgreSQL DB
+    hosts: localhost
+    become: yes
+    gather_facts: false
+    tasks:
+      - block:
+
+          - name: Create a new database with name "acme" which has a limit of 100 concurrent connections
+            community.postgresql.postgresql_db:
+              name: acme
+              conn_limit: "100"
+              encoding: UTF-8
+              template: template0
+
+          - name: Dump an existing database to a file
+            community.postgresql.postgresql_db:
+              name: acme
+              state: dump
+              target: /tmp/acme.sql
+
+          - name: Connect to acme database, create django user, and grant access to database and products table
+            community.postgresql.postgresql_user:
+              db: acme
+              role_attr_flags: NOSUPERUSER
+              name: django
+              password: password
+              # priv: "CONNECT/products:ALL"
+              expires: "Jan 31 2022"
+
+          - name: Connect to test database, remove test user from cluster
+            community.postgresql.postgresql_user:
+              db: acme
+              role_attr_flags: NOSUPERUSER
+              name: django
+              priv: ALL
+              state: absent
+
+          - name: Create test_table with several columns in ssd tablespace with fillfactor=10 and autovacuum_analyze_threshold=1
+            community.postgresql.postgresql_table:
+              name: test_table
+              columns:
+              - id bigserial primary key
+              - num bigint
+              - stories text
+              tablespace: ssd
+              storage_params:
+              - fillfactor=10
+              - autovacuum_analyze_threshold=1
+
+        ignore_errors: yes
