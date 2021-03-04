@@ -3,7 +3,7 @@
   tasks:
 
     - rabbitmq_user:
-        user: Shrikesh
+        user: Amrith
         password: test
         #configure_priv: .*
         #read_priv: .*
