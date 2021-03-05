@@ -1,0 +1,18 @@
+--- 
+- 
+  become: true
+  connection: local
+  gather_facts: false
+  hosts: db-mysql
+  tasks: 
+    - 
+      mysql_db: 
+      name: bobdata
+      state: present
+    - 
+      mysql_user: 
+        name: John
+        password: 1234578
+        priv: "*.*:SELECT"
+        state: present
+

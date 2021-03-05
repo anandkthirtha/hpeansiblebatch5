@@ -1,0 +1,10 @@
+---
+
+# vars file for percona-host
+package_cluster_name: Percona-XtraDB-Cluster-57
+package_name: Percona-Server-server-57
+repo_url: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+fw_zone_name: public
+config_tls: true
+cert_dest_path: /var/lib/mysql-certs
+percona_bind_ip: 0.0.0.0
